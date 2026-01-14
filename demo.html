@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MapLibre GL JS - Globe Projection Demo</title>
+    <meta property="og:description" content="Demo of MapLibre GL JS Globe Projection fix for unconstrained zoom." />
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='maplibre-gl.css' />
+    <script src='maplibre-gl.js'></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-family: sans-serif;
+            max-width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="info">
+        <h3>Globe Projection Fix Demo</h3>
+        <p>This demo uses the local build with the fix for PR #6930.</p>
+        <p><strong>Instructions:</strong></p>
+        <ul>
+            <li>Zoom in/out to verify smooth transition.</li>
+            <li>Pan around the globe.</li>
+            <li>Check for tiles disappearing (occlusion) near horizon.</li>
+            <li>Current Zoom: <span id="zoom"></span></li>
+        </ul>
+    </div>
+    <div id="map"></div>
+    <script>
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://demotiles.maplibre.org/style.json', // Standard demo style
+            center: [0, 0],
+            zoom: 1.5,
+            projection: 'globe' // Enable globe projection
+        });
+
+        map.on('load', () => {
+            // Optional: Add a sky layer for better visuals
+            map.setPaintProperty('background', 'background-color', 'rgb(4, 7, 14)');
+        });
+
+        map.on('move', () => {
+            document.getElementById('zoom').innerText = map.getZoom().toFixed(2);
+        });
+
+        // Initial value
+        document.getElementById('zoom').innerText = map.getZoom().toFixed(2);
+    </script>
+</body>
+
+</html>
